@@ -27,9 +27,12 @@ public class DownloadImageActivity extends Activity {
         // Always call super class for necessary
         // initialization/implementation.
         // @@ TODO -- you fill in here.
+        super.onCreate(savedInstanceState);
 
         // Get the URL associated with the Intent data.
         // @@ TODO -- you fill in here.
+        Intent intent = getIntent();
+        final Uri url = intent.getData();
 
         // Download the image in the background, create an Intent that
         // contains the path to the image file, and set this as the
@@ -39,5 +42,24 @@ public class DownloadImageActivity extends Activity {
         // concurrency framework.  Note that the finish() method
         // should be called in the UI thread, whereas the other
         // methods should be called in the background thread.
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Moves the current Thread into the background
+                android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+                Uri pathToFile = DownloadUtils.downloadImage(getApplicationContext(), url);
+                Intent result = new Intent();
+                result.putExtra(Intent.EXTRA_TEXT, pathToFile.toString());
+                setResult(Activity.RESULT_OK, result);
+                DownloadImageActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                });
+            }
+        }).start();
+
     }
 }
