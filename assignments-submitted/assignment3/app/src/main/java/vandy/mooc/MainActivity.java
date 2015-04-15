@@ -111,6 +111,14 @@ public class MainActivity extends LifecycleLoggingActivity {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Do something to save the state
+
+    }
+
+
     /**
      * Hook method called back by the Android Activity framework when
      * an Activity that's been launched exits, giving the requestCode

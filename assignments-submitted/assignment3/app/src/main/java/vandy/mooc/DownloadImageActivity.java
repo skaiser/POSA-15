@@ -3,6 +3,7 @@ package vandy.mooc;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 /**
@@ -38,28 +39,25 @@ public class DownloadImageActivity extends Activity {
         // contains the path to the image file, and set this as the
         // result of the Activity.
 
-        // @@ TODO -- you fill in here using the Android "HaMeR"
-        // concurrency framework.  Note that the finish() method
-        // should be called in the UI thread, whereas the other
-        // methods should be called in the background thread.
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Moves the current Thread into the background
-                android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-                Uri pathToFile = DownloadUtils.downloadImage(getApplicationContext(), url);
-                Intent result = new Intent();
-                result.putExtra(Intent.EXTRA_TEXT, pathToFile.toString());
-                setResult(Activity.RESULT_OK, result);
-                DownloadImageActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        finish();
-                    }
-                });
-            }
-        }).start();
+        // TODO: get the command to run from the thread pool
+        new DownloadTask().execute(url);
 
     }
+
+    private class DownloadTask extends AsyncTask<Uri, Void, Uri> {
+        @Override
+        protected Uri doInBackground(Uri... urls) {
+            return Utils.downloadImage(getApplicationContext(), urls[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Uri pathToFile) {
+            Intent result = new Intent();
+            result.putExtra(Intent.EXTRA_TEXT, pathToFile.toString());
+            setResult(Activity.RESULT_OK, result);
+            finish();
+        }
+    }
+
 }
