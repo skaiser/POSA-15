@@ -29,6 +29,7 @@ public class MainActivity extends LifecycleLoggingActivity {
      * image.
      */
     private static final int DOWNLOAD_IMAGE_REQUEST = 1;
+    private static final int FILTER_IMAGE_REQUEST = 2;
 
     /**
      * EditText field for entering the desired URL to an image.
@@ -90,11 +91,23 @@ public class MainActivity extends LifecycleLoggingActivity {
             // it's an Intent that's implemented by the
             // DownloadImageActivity.
             // @@ TODO - you fill in here.
-            Intent downloadImageIntent = null;
+            Intent imageIntent = null;
             Uri url = getUrl();
 
             if (url != null) {
-                downloadImageIntent = makeDownloadImageIntent(url);
+                if (view.getId() == R.id.button1) {
+                    Log.i(TAG, "Download image");
+                    imageIntent = makeDownloadImageIntent(url);
+                    Utils.showToast(this, "Downloading normal image...");
+                    startActivityForResult(imageIntent, DOWNLOAD_IMAGE_REQUEST);
+                } else if (view.getId() == R.id.button2) {
+                    Log.i(TAG, "Filtering image");
+                    imageIntent = makeFilterImageIntent(url);
+                    Utils.showToast(this, "Downloading filtered image...");
+                    startActivityForResult(imageIntent, FILTER_IMAGE_REQUEST);
+                } else {
+                    Log.i(TAG, "nothing");
+                }
             }
 
             // Start the Activity associated with the Intent, which
@@ -102,10 +115,10 @@ public class MainActivity extends LifecycleLoggingActivity {
             // downloaded image file via the onActivityResult() hook
             // method.
             // @@ TODO -- you fill in here.
-            if (downloadImageIntent != null) {
-                Toast.makeText(this, "Downloading image...", Toast.LENGTH_SHORT).show();
-                startActivityForResult(downloadImageIntent, DOWNLOAD_IMAGE_REQUEST);
-            }
+            //if (imageIntent != null) {
+            //    Utils.showToast(this, "Downloading normal image...");
+            //    startActivityForResult(imageIntent, DOWNLOAD_IMAGE_REQUEST);
+            //}
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,7 +149,7 @@ public class MainActivity extends LifecycleLoggingActivity {
             // Check if the request code is what we're expecting.
             // @@ TODO -- you fill in here, replacing true with the
             // right code.
-            if (requestCode == DOWNLOAD_IMAGE_REQUEST) {
+            if (requestCode == DOWNLOAD_IMAGE_REQUEST || requestCode == FILTER_IMAGE_REQUEST) {
                 // Call the makeGalleryIntent() factory method to
                 // create an Intent that will launch the "Gallery" app
                 // by passing in the path to the downloaded image
@@ -181,6 +194,13 @@ public class MainActivity extends LifecycleLoggingActivity {
     	// TODO -- you fill in here, replacing "null" with the proper
     	// code.
         Intent intent = new Intent(this, DownloadImageActivity.class);
+        intent.setData(url);
+
+        return intent;
+    }
+
+    private Intent makeFilterImageIntent(Uri url) {
+        Intent intent = new Intent(this, FilterImageActivity.class);
         intent.setData(url);
 
         return intent;
