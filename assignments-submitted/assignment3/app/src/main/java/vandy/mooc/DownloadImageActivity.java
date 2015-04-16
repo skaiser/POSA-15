@@ -3,15 +3,12 @@ package vandy.mooc;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 
 /**
  * An Activity that downloads an image, stores it in a local file on
@@ -24,7 +21,6 @@ public class DownloadImageActivity extends Activity {
     private final String TAG = getClass().getSimpleName();
 
     private RetainedFragment mRetainedFragment;
-    //private Uri mUri;
 
     /**
      * Hook method called when a new instance of Activity is created.
