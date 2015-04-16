@@ -98,7 +98,6 @@ public class MainActivity extends LifecycleLoggingActivity {
                 if (view.getId() == R.id.button1) {
                     Log.i(TAG, "Download image");
                     imageIntent = makeDownloadImageIntent(url);
-                    Utils.showToast(this, "Downloading normal image...");
                     startActivityForResult(imageIntent, DOWNLOAD_IMAGE_REQUEST);
                 } else if (view.getId() == R.id.button2) {
                     Log.i(TAG, "Filtering image");

@@ -1,11 +1,14 @@
 package vandy.mooc;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 
 /**
@@ -17,8 +20,6 @@ public class DownloadImageActivity extends Activity {
      * Debugging tag used by the Android logger.
      */
     private final String TAG = getClass().getSimpleName();
-
-    //private ProgressBar mProgressBar
 
     /**
      * Hook method called when a new instance of Activity is created.
@@ -45,7 +46,11 @@ public class DownloadImageActivity extends Activity {
 
 
         // TODO: get the command to run from the thread pool
-        new DownloadTask().execute(url);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            new DownloadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+        } else {
+            new DownloadTask().execute(url);
+        }
 
     }
 
@@ -53,6 +58,7 @@ public class DownloadImageActivity extends Activity {
         @Override
         protected void onPreExecute() {
             Log.d(TAG, "in DownloadTask.preExecute");
+            Utils.showToast(getApplicationContext(), "Downloading normal image...");
         }
 
         @Override

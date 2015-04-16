@@ -37,4 +37,6 @@
         android:onClick="downloadImage"
         android:text="@string/filter_image" />
 
+
+
 </LinearLayout>
