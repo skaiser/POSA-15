@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 /**
  * An Activity that downloads an image, stores it in a local file on
@@ -20,6 +21,7 @@ public class DownloadImageActivity extends Activity {
      */
     private final String TAG = getClass().getSimpleName();
 
+    private ProgressBar mProgressBar;
     private RetainedFragment mRetainedFragment;
 
     /**
@@ -35,6 +37,8 @@ public class DownloadImageActivity extends Activity {
         // initialization/implementation.
         // @@ TODO -- you fill in here.
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.download_image_activity);
+        mProgressBar = (ProgressBar)findViewById(R.id.progressBar);
 
         // Get the URL associated with the Intent data.
         // @@ TODO -- you fill in here.
