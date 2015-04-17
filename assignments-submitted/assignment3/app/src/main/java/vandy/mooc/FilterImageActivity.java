@@ -102,10 +102,10 @@ public class FilterImageActivity extends Activity {
         @Override
         protected Uri doInBackground(Uri... urls) {
             Log.d(TAG, "in FilterTask.doInBackground");
-            publishProgress();
+            //publishProgress();
             try {
                 Uri pathToImage = Utils.downloadImage(getApplicationContext(), urls[0]);
-                publishProgress();
+              //  publishProgress();
                 mRetainedFragment.setImagePath(Utils.grayScaleFilter(getApplicationContext(), pathToImage));
             } catch (Exception e) {
                 Log.d(TAG, "Caught exception downloading image");
